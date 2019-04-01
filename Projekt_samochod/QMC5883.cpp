@@ -1,3 +1,4 @@
+/*
 #include <Wire.h>
 #include "QMC5883.h"
 
@@ -58,3 +59,4 @@ void QMC5883::measure(void)
 	this->z = z;
 	//interrupts();
 }
+*/

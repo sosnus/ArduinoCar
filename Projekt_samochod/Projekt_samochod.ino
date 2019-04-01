@@ -12,12 +12,6 @@ void setup()
 {
   // put your setup code here, to run once:
   car.Init();
-
-    // Silniki
-  pinMode(A_PHASE, OUTPUT);
-  pinMode(A_ENABLE, OUTPUT);
-  pinMode(B_PHASE, OUTPUT);
-  pinMode(B_ENABLE, OUTPUT);
   Serial.begin(9600);
 }
 
@@ -25,10 +19,21 @@ void loop()
 {
   // put your main code here, to run repeatedly:
   
+  if(car.GetDistanceF() > 40)
+    setEngines(150);
+  else if(car.GetDistanceF() < 40)
+    setEngines(0);
+  
+  /*
   Serial.print("Distance: "); 
   Serial.print(car.GetDistanceF()); 
   Serial.println(" cm");
   delay(500);
+  */
 }
 
-
+void setEngines(int power)
+{
+    car.SetPowerLevel("left", power);
+    car.SetPowerLevel("right", power);
+}

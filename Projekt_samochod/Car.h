@@ -16,18 +16,28 @@
 #define US_RIGHT_TRIGGER_PIN  4
 #define US_RIGHT_ECHO_PIN   5
 
+// Silniki, sterowanie PWM
+
+#define A_ENABLE    2 //PWM
+#define A_PHASE     46  //0 - przod, 1 - tyl DIGITAL  
+#define B_ENABLE    3 //PWM
+#define B_PHASE     48  //0 - przod, 1 - tyl DIGITAL
+#define MODE      44
+
+//Silniki, wejście enkoderowe
+
+#define ENCODER_LEFT  50  // Enkoder lewej strony
+#define ENCODER_RIGHT 51  // Enkoder prawej strony  
 
 class Car
 {
-
-
   public:
     void Init();
 
     double GetDistanceF();
     double GetDistanceB();
     double GetDistanceL();
-    double GetDistanceR();
-  
-};
+    double GetDistanceR(); 
 
+    void SetPowerLevel(String side, int level);
+};

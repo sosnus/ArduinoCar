@@ -1,3 +1,4 @@
+/*
 #if !defined(_ISA_MOBILE_H_)
 #define _ISA_MOBILE_H_
 
@@ -7,7 +8,7 @@
  * Silniki, sterowanie PWM
  * 
  */
- 
+ /*
 #define A_ENABLE		2	//PWM
 #define A_PHASE			46  //0 - przod, 1 - tyl DIGITAL
 	
@@ -19,7 +20,7 @@
 /*
  * Silniki, wejście enkoderowe
  *
- */
+ 
 #define ENCODER_LEFT	50	// Enkoder lewej strony
 #define ENCODER_RIGHT	51	// Enkoder prawej strony	
 	
@@ -36,7 +37,7 @@ enum class PowerSideEnum
  * Czujniki odległości
  * Moduł HC-SR04
  */
-
+/*
 #define US_FRONT				0
 #define US_FRONT_TRIGGER_PIN	8
 #define US_FRONT_ECHO_PIN		9
@@ -84,3 +85,5 @@ int ultrasound_echo_pin[] = {
 
  
 #endif // _ISA_MOBILE_H_
+
+*/
