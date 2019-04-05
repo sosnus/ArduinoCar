@@ -1,28 +1,35 @@
 #include "Car.h"
 
-void Car::Init()
+Car car;
+
+void Car::Car()
 {
-  pinMode(US_FRONT_TRIGGER_PIN, OUTPUT);
-  pinMode(US_FRONT_ECHO_PIN, INPUT);
-  pinMode(US_BACK_TRIGGER_PIN, OUTPUT);
-  pinMode(US_BACK_ECHO_PIN, INPUT);
-  pinMode(US_LEFT_TRIGGER_PIN, OUTPUT);
-  pinMode(US_LEFT_ECHO_PIN, INPUT);
-  pinMode(US_RIGHT_TRIGGER_PIN, OUTPUT);
-  pinMode(US_RIGHT_ECHO_PIN, INPUT);
+	pinMode(US_FRONT_TRIGGER_PIN, OUTPUT);
+	pinMode(US_FRONT_ECHO_PIN, INPUT);
+	pinMode(US_BACK_TRIGGER_PIN, OUTPUT);
+	pinMode(US_BACK_ECHO_PIN, INPUT);
+	pinMode(US_LEFT_TRIGGER_PIN, OUTPUT);
+	pinMode(US_LEFT_ECHO_PIN, INPUT);
+	pinMode(US_RIGHT_TRIGGER_PIN, OUTPUT);
+	pinMode(US_RIGHT_ECHO_PIN, INPUT);
 
-  pinMode(A_PHASE, OUTPUT);
-  pinMode(A_ENABLE, OUTPUT);
-  pinMode(B_PHASE, OUTPUT);
-  pinMode(B_ENABLE, OUTPUT);
+	pinMode(A_PHASE, OUTPUT);
+	pinMode(A_ENABLE, OUTPUT);
+	pinMode(B_PHASE, OUTPUT);
+	pinMode(B_ENABLE, OUTPUT);
+  
+	leftEncoderCounter = 0;
+	rightEncoderCounter = 0;
+	
+	pinMode(ENCODER_LEFT, INPUT);
+	pinMode(ENCODER_RIGHT, INPUT);
+	
+	attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT),  &Car::EncodersInterruptLeft, 	CHANGE);
+	attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &Car::EncodersInterruptRight, CHANGE);
 
-  pinMode(ENCODER_LEFT, INPUT);
-  pinMode(ENCODER_RIGHT, INPUT);
-
-  SetPowerLevel("left", 0);
-  SetPowerLevel("right", 0);
+	SetPowerLevel("left", 0);
+	SetPowerLevel("right", 0);
 }
-
 
 double Car::GetDistanceF()
 {
@@ -107,4 +114,24 @@ void Car::SetPowerLevel(String side, int level)
       analogWrite(B_ENABLE, 0);
     }
   } 
+}
+
+void Car::encodersInterruptLeft()
+{
+	car.m_leftCounter++;
+}
+
+void Car::encodersInterruptRight()
+{
+	car.m_rightCounter++;
+}
+
+uint64_t Car::getLeftCount()
+{
+	return m_leftCounter;
+}
+
+uint64_t Car::getRightCount()
+{
+	return m_rightCounter;
 }
