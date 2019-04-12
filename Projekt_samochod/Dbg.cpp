@@ -7,26 +7,29 @@ Dbg::Dbg()
 
 void Dbg::initialisation()
 {
-    Serial.begin(57600);
+    // Serial.begin(57600);
     Serial1.begin(57600);
-    Serial.println("Dbg init USB");
+    // Serial.println("Dbg init USB");
+    Serial1.println(" ");
+    Serial1.println("======================================");
     Serial1.println("Dbg init BT");
 }
 
 void Dbg::checkCmd()
 {
+    
     if (Serial1.available())
     {
         Serial1.write("EVENT: TYPE=");
         int inByte = Serial1.read();
-        Serial1.write("<");
-        Serial1.write(inByte);
-        Serial1.write(">");
         delay(100);
         switch (inByte)
         {
         case 'L':
         {
+            Serial1.write("<");
+            Serial1.write(inByte);
+            Serial1.write(">");
             inByte = Serial1.read();
             Serial1.write(" CMD=<");
             Serial1.write(inByte);
@@ -42,29 +45,29 @@ void Dbg::checkCmd()
                 digitalWrite(LED_BUILTIN, 0);
             }
         }
-        break;
-                case '\n':
+        // break;
+        case '\n':
         {
             Serial1.write("<");
             Serial1.write("CR");
             Serial1.write(">");
-        }             
-           case '\r':
+        }
+        case '\r':
         {
             Serial1.write("<");
             Serial1.write("LF");
             Serial1.write(">");
         }
-        break;
+        // break;
         default:
         {
-                Serial1.write("BAD_CMD");
+            Serial1.write("BAD_CMD");
             Serial1.write("<");
             Serial1.write(inByte);
             Serial1.write(">");
         }
 
-            break;
+        // break;
         }
 
         // while (Serial1.available())
@@ -73,7 +76,7 @@ void Dbg::checkCmd()
         //   Serial.write(inByte);
         //   Serial.print(" ");
         // }
-        Serial.println(";");
+        Serial.println(" END;");
         delay(100);
     }
 }
