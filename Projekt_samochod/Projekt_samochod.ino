@@ -1,4 +1,7 @@
+#include "Arduino.h"
+
 #include "Car.h"
+#include "Dbg.h"
 
 #define A_ENABLE 2 //PWM
 #define A_PHASE 46 //0 - przod, 1 - tyl DIGITAL
@@ -7,27 +10,40 @@
 #define B_PHASE 48 //0 - przod, 1 - tyl DIGITAL
 
 Car car;
+Dbg dbg;
 
 void setup()
 {
   // // // // // // car.Init();
-  Serial.begin(57600);
-  Serial1.begin(57600);
+  // Serial.begin(57600);
+  // Serial1.begin(57600);
+  dbg.initialisation();
 }
 
 void loop()
 {
-  if (Serial1.available())
+  if(Serial1.available())
   {
-    int inByte = Serial1.read();
-    Serial.write(inByte);
+    Serial.write("Wykonuję polecenie: ");
+    for(Serial1.available())
+    {
+      int inByte = Serial1.read();
+      Serial.write(inByte);
+      Serial.print(" ");
+    }
+    Serial.println(";");
   }
 
-  if (Serial.available())
+  if(Serial.available())
   {
     int inByte = Serial.read();
     Serial1.write(inByte);
+    // int inByte = Serial.read();
+    // Serial1.write(Serial.readBytes());
   }
+
+  dbg.getY();
+  delay(2000);
 
   // put your main code here, to run repeatedly:
 
