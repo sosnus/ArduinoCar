@@ -53,20 +53,23 @@ int Dbg::checkCmd()
                 if (inByte == '1')
                 {
                     Serial1.write("CMD=<LED_ON>");
-                    digitalWrite(LED_BUILTIN, 1);
-                    return frameErr.ok;
+                    this -> led(1);
+                    // digitalWrite(LED_BUILTIN, 1);
+                    return frameErr::ok;
                 }
                 else
                 {
                     Serial1.write("CMD=<LED_OFF>");
-                    digitalWrite(LED_BUILTIN, 0);
-                    return frameErr.ok;
+                    this -> led(0);
+
+                    // digitalWrite(LED_BUILTIN, 0);
+                    return frameErr::ok;
                 }
             }
             else if (inByte == 'M')
             {
                 Serial1.write(" TYPE=<M>");
-                    return frameErr.ok;
+                    return frameErr::ok;
             }
             else
             {
@@ -74,7 +77,7 @@ int Dbg::checkCmd()
                 Serial1.write("<");
                 Serial1.write(inByte);
                 Serial1.write(">");
-                    return  frameErr.badCmd;
+                    return  frameErr::badCmd;
             }
         }    // end '@' EVENT
         else // not '@'
@@ -96,11 +99,11 @@ int Dbg::checkCmd()
                 }
                 inByte = Serial1.read();
             }
-            return  frameErr.badFrame;
+            return  frameErr::badFrame;
         } // end  // not '@'
 
     } // if (Serial1.available())
-    return  frameErr.endMethodReached;
+    return  frameErr::endMethodReached;
 
 } //end  Dbg::checkCmd()
 
