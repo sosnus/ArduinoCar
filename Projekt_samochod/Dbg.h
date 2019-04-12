@@ -5,6 +5,8 @@ class Dbg
 {
   public:
     Dbg(); //include init
+    void checkCmd();
+
     void initialisation();
     int getY();
     int life = 3;

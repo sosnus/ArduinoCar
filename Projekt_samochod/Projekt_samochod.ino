@@ -20,28 +20,21 @@ void setup()
 
 void loop()
 {
-  if (Serial1.available())
-  {
-    Serial.write("Wykonuję polecenie: ");
-    while (Serial1.available())
-    {
-     int inByte = Serial1.read();
-      Serial.write(inByte);
-      Serial.print(" ");
-    }
-    Serial.println(";");
-  }
+  dbg.checkCmd();
 
-  if (Serial.available())
-  {
-         int inByte = Serial.read();
-      Serial1.write(inByte);
-    // int inByte = Serial.read();
-    // Serial1.write(Serial.readBytes());
-  }
 
-  dbg.getY();
-  delay(2000);
+  // if (Serial.available())
+  // {
+
+  //   /* constant-expression */
+  //   /* code */
+
+  //   // int inByte = Serial.read();
+  //   // Serial1.write(Serial.readBytes());
+  // }
+
+  // dbg.getY();
+  // delay(2000);
 
   // put your main code here, to run repeatedly:
 
