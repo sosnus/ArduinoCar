@@ -19,7 +19,7 @@ void Dbg::initialisation()
 
 int Dbg::getY()
 {
-        Serial.println("getY USB");
-    Serial1.println("getY BT");
+        Serial.println("Dbg getY USB");
+    Serial1.println("Dbg getY BT");
     return 5;
 }

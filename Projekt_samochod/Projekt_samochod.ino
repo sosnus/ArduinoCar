@@ -15,29 +15,27 @@ Dbg dbg;
 void setup()
 {
   // // // // // // car.Init();
-  // Serial.begin(57600);
-  // Serial1.begin(57600);
   dbg.initialisation();
 }
 
 void loop()
 {
-  if(Serial1.available())
+  if (Serial1.available())
   {
     Serial.write("Wykonuję polecenie: ");
-    for(Serial1.available())
+    while (Serial1.available())
     {
-      int inByte = Serial1.read();
+     int inByte = Serial1.read();
       Serial.write(inByte);
       Serial.print(" ");
     }
     Serial.println(";");
   }
 
-  if(Serial.available())
+  if (Serial.available())
   {
-    int inByte = Serial.read();
-    Serial1.write(inByte);
+         int inByte = Serial.read();
+      Serial1.write(inByte);
     // int inByte = Serial.read();
     // Serial1.write(Serial.readBytes());
   }

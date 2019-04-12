@@ -1,4 +1,5 @@
 #define SERIAL_BAUD 57600
+// #define SERIAL_DELAY    2000
 
 class Dbg
 {
