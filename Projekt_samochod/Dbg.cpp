@@ -1,12 +1,33 @@
 #include "Arduino.h"
 #include "Dbg.h"
 
+
+enum frameErr
+{
+    ok = 0, //OK
+    badFrame = 1, //Without '@'
+    badCmd = 2,
+    endMethodReached = 3,
+    //...
+    przykladktorystam = 40 //przy "wartości" ostatniej przecinka nie stosuje się
+};
+
+
+
 Dbg::Dbg()
 {
 }
 
+// __attribute__ ((weak))
+void Dbg::led(int state)
+{
+    Serial1.write("LED METHOD TO OVERRIDE");
+    digitalWrite(LED_BUILTIN, state);
+}
+
 void Dbg::initialisation()
 {
+    pinMode(LED_BUILTIN, OUTPUT);
     // Serial.begin(57600);
     Serial1.begin(57600);
     // Serial.println("Dbg init USB");
@@ -15,87 +36,72 @@ void Dbg::initialisation()
     Serial1.println("Dbg init BT");
 }
 
-void Dbg::checkCmd()
+int Dbg::checkCmd()
 {
-
     if (Serial1.available())
     {
         int inByte = Serial1.read();
         if (inByte == '@')
         {
+            Serial1.write("EVENT:");
             delay(50);
-
             inByte = Serial1.read();
-            Serial1.write("EVENT: TYPE=");
-            Serial1.write("<");
-            Serial1.write(inByte);
-            Serial1.write(">");
-            switch (inByte)
+            if (inByte == 'L')
             {
-            case 'L':
-            {
-
+                Serial1.write(" TYPE=<LED>");
                 inByte = Serial1.read();
-                Serial1.write(" CMD=<");
-                Serial1.write(inByte);
-                Serial1.write("> ");
                 if (inByte == '1')
                 {
-                    Serial1.write("LED_ON");
+                    Serial1.write("CMD=<LED_ON>");
                     digitalWrite(LED_BUILTIN, 1);
+                    return frameErr.ok;
                 }
                 else
                 {
-                    Serial1.write("LED_OFF");
+                    Serial1.write("CMD=<LED_OFF>");
                     digitalWrite(LED_BUILTIN, 0);
+                    return frameErr.ok;
                 }
             }
-            // break;
-            case '\n':
+            else if (inByte == 'M')
             {
-                Serial1.write("<");
-                Serial1.write("CR");
-                Serial1.write(">");
+                Serial1.write(" TYPE=<M>");
+                    return frameErr.ok;
             }
-            case '\r':
-            {
-                Serial1.write("<");
-                Serial1.write("LF");
-                Serial1.write(">");
-            }
-            // break;
-            default:
+            else
             {
                 Serial1.write("BAD_CMD");
                 Serial1.write("<");
                 Serial1.write(inByte);
                 Serial1.write(">");
+                    return  frameErr.badCmd;
             }
-
-                // break;
-            }
-
-            // while (Serial1.available())
-            // {
-            //  int inByte = Serial1.read();
-            //   Serial.write(inByte);
-            //   Serial.print(" ");
-            // }
-            Serial.println(" END;");
-            delay(100);
         }    // end '@' EVENT
         else // not '@'
         {
+
             while (inByte != -1)
             {
-                Serial1.write("<");
-                Serial1.write(inByte);
-                Serial1.write(">");
+                if (inByte == 13 || inByte == 10)
+                {
+
+                    Serial1.write(";"); //<CR or LF>
+                }
+                else
+                {
+                Serial1.write("ERR_CLEAN_BUFF  ");
+                    Serial1.write("<");
+                    Serial1.write(inByte);
+                    Serial1.write(">");
+                }
                 inByte = Serial1.read();
             }
-        }
+            return  frameErr.badFrame;
+        } // end  // not '@'
 
     } // if (Serial1.available())
+    return  frameErr.endMethodReached;
+
 } //end  Dbg::checkCmd()
 
 int Dbg::getY()

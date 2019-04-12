@@ -5,7 +5,8 @@ class Dbg
 {
   public:
     Dbg(); //include init
-    void checkCmd();
+    int checkCmd();
+void led(int state);
 
     void initialisation();
     int getY();
