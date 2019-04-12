@@ -1,8 +1,6 @@
 #include "Car.h"
 
-Car car;
-
-void Car::Car()
+Car::Car()
 {
 	pinMode(US_FRONT_TRIGGER_PIN, OUTPUT);
 	pinMode(US_FRONT_ECHO_PIN, INPUT);
@@ -24,14 +22,14 @@ void Car::Car()
 	pinMode(ENCODER_LEFT, INPUT);
 	pinMode(ENCODER_RIGHT, INPUT);
 	
-	attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT),  &Car::EncodersInterruptLeft, 	CHANGE);
-	attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &Car::EncodersInterruptRight, CHANGE);
+	attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT),  &encodersInterruptLeft, 	CHANGE);
+	attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
 
-	SetPowerLevel("left", 0);
-	SetPowerLevel("right", 0);
+	setPowerLevel("left", 0);
+	setPowerLevel("right", 0);
 }
 
-double Car::GetDistanceF()
+double Car::getDistanceF()
 {
   digitalWrite(US_FRONT_TRIGGER_PIN, LOW);
   delayMicroseconds(2);
@@ -43,7 +41,7 @@ double Car::GetDistanceF()
   return duration*0.034/2;
 }
 
-double Car::GetDistanceB()
+double Car::getDistanceB()
 {
   digitalWrite(US_BACK_TRIGGER_PIN, LOW);
   delayMicroseconds(2);
@@ -55,7 +53,7 @@ double Car::GetDistanceB()
   return duration*0.034/2;
 }
 
-double Car::GetDistanceL()
+double Car::getDistanceL()
 {
   digitalWrite(US_LEFT_TRIGGER_PIN, LOW);
   delayMicroseconds(2);
@@ -67,7 +65,7 @@ double Car::GetDistanceL()
   return duration*0.034/2;
 }
 
-double Car::GetDistanceR()
+double Car::getDistanceR()
 {
   digitalWrite(US_RIGHT_TRIGGER_PIN, LOW);
   delayMicroseconds(2);
@@ -79,7 +77,7 @@ double Car::GetDistanceR()
   return duration*0.034/2;
 }
 
-void Car::SetPowerLevel(String side, int level)
+void Car::setPowerLevel(String side, int level)
 {
   level = constrain(level, -255, 255);
   
@@ -118,20 +116,20 @@ void Car::SetPowerLevel(String side, int level)
 
 void Car::encodersInterruptLeft()
 {
-	car.m_leftCounter++;
+	car.leftEncoderCounter++;
 }
 
 void Car::encodersInterruptRight()
 {
-	car.m_rightCounter++;
+	car.rightEncoderCounter++;
 }
 
-uint64_t Car::getLeftCount()
+uint64_t Car::getLeftEncoderCount()
 {
-	return m_leftCounter;
+	return leftEncoderCounter;
 }
 
-uint64_t Car::getRightCount()
+uint64_t Car::getRightEncoderCount()
 {
-	return m_rightCounter;
+	return rightEncoderCounter;
 }
