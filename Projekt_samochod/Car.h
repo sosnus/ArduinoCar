@@ -36,19 +36,18 @@ class Car
   public:
 		Car();
 
-		double GetDistanceF();
-		double GetDistanceB();
-		double GetDistanceL();
-		double GetDistanceR(); 
+		double getDistanceF();
+		double getDistanceB();
+		double getDistanceL();
+		double getDistanceR(); 
 
-		void SetPowerLevel(String side, int level);
+		void setPowerLevel(String side, int level);
 		
-		uint64_t GetLeftEncoderCount();
-		uint64_t GetRightEncoderCount();
+		uint64_t getLeftEncoderCount();
+		uint64_t getRightEncoderCount();
 	
 	private:
 		uint64_t leftEncoderCounter, rightEncoderCounter;
-	
-		static void EncodersInterruptLeft();
-		static void EncodersInterruptRight();
+		static void encodersInterruptLeft();
+		static void encodersInterruptRight();
 };

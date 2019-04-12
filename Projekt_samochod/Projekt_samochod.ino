@@ -11,7 +11,6 @@ Car car;
 void setup() 
 {
   // put your setup code here, to run once:
-  car.Init();
   Serial.begin(9600);
 }
 
@@ -19,14 +18,14 @@ void loop()
 {
   // put your main code here, to run repeatedly:
   
-  if(car.GetDistanceF() > 40)
+  if(car.getDistanceF() > 40)
     setEngines(150);
-  else if(car.GetDistanceF() < 40)
+  else if(car.getDistanceF() < 40)
     setEngines(0);
   
   /*
   Serial.print("Distance: "); 
-  Serial.print(car.GetDistanceF()); 
+  Serial.print(car.getDistanceF()); 
   Serial.println(" cm");
   delay(500);
   */
@@ -34,6 +33,6 @@ void loop()
 
 void setEngines(int power)
 {
-    car.SetPowerLevel("left", power);
-    car.SetPowerLevel("right", power);
+    car.setPowerLevel("left", power);
+    car.setPowerLevel("right", power);
 }
