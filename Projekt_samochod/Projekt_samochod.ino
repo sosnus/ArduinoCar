@@ -25,10 +25,10 @@ void loop()
      /* TODO: Staszek */ // dbg.checkCmd(); 
   // put your main code here, to run repeatedly:
   
-  if(car.getDistanceF() > 40)
+  if(car.GetDistanceF() > 40)
     setEngines(150);
-  else if(car.getDistanceF() < 40)
-setEngines(0);
+  else if(car.GetDistanceF() < 40)
+    setEngines(0);
   
   /*
   Serial.print("Distance: "); 
