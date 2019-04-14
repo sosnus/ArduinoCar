@@ -24,13 +24,13 @@ void loop()
 {
      /* TODO: Staszek */ // dbg.checkCmd(); 
   // put your main code here, to run repeatedly:
+ 
 
-    /* TODO: Staszek */ // dbg.checkCmd(); 
   if(car.GetDistanceF() > 40)
     setEngines(150);
   else if(car.GetDistanceF() < 40)
     setEngines(0);
-
+  
   /*
   Serial.print("Distance: "); 
   Serial.print(car.GetDistanceF()); 
@@ -41,6 +41,6 @@ void loop()
 
 void setEngines(int power)
 {
-    car.setPowerLevel("left", power);
-    car.setPowerLevel("right", power);
+    car.SetPowerLevel("left", power);
+    car.SetPowerLevel("right", power);
 }
