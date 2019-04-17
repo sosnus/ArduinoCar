@@ -29,10 +29,7 @@ void setup()
 void loop() 
 {
   // put your main code here, to run repeatedly:
-#if DBG_STA
-dbg.checkCmd(); 
-#endif
-/*
+  
   if(car.getDistanceF() > 40)
     setEngines(150);
   else if(car.getDistanceF() < 40)
