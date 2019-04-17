@@ -2,7 +2,8 @@
 
 Car car;
 
-void Car::Car()
+// void - konstruktor zwracający typ, no nieźle :D 
+Car::Car()
 {
 	pinMode(US_FRONT_TRIGGER_PIN, OUTPUT);
 	pinMode(US_FRONT_ECHO_PIN, INPUT);
