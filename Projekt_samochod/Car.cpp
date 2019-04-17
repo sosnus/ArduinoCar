@@ -1,3 +1,4 @@
+/*
 #include "Car.h"
 
 Car car;
@@ -136,3 +137,4 @@ uint64_t Car::getRightCount()
 {
 	return m_rightCounter;
 }
+*/

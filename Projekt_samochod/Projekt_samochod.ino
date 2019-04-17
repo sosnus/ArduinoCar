@@ -1,6 +1,6 @@
 #define DBG_STA 1
 
-#include "Car.h"
+// #include "Car.h"
 
 #if DBG_STA
  #include "Arduino.h"
@@ -13,7 +13,7 @@
 #define B_ENABLE    3 //PWM
 #define B_PHASE     48  //0 - przod, 1 - tyl DIGITAL
 
-Car car;
+// Car car;
 #if DBG_STA
  Dbg dbg;
 #endif
@@ -32,11 +32,12 @@ void loop()
 #if DBG_STA
 dbg.checkCmd(); 
 #endif
+/*
   if(car.getDistanceF() > 40)
     setEngines(150);
   else if(car.getDistanceF() < 40)
     setEngines(0);
-  
+  */
   /*
   Serial.print("Distance: "); 
   Serial.print(car.getDistanceF()); 
@@ -44,9 +45,10 @@ dbg.checkCmd();
   delay(500);
   */
 }
-
+/*
 void setEngines(int power)
 {
     car.setPowerLevel("left", power);
     car.setPowerLevel("right", power);
 }
+*/
