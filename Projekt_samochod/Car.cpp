@@ -1,4 +1,3 @@
-/*
 #include "Car.h"
 
 Car::Car()
@@ -134,4 +133,3 @@ uint64_t Car::getRightEncoderCount()
 {
 	return rightEncoderCounter;
 }
-*/

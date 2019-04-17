@@ -1,4 +1,3 @@
-/*
 #include <avr/pgmspace.h>
 
 #if (ARDUINO >= 100)
@@ -52,4 +51,3 @@ class Car
 		static void encodersInterruptLeft();
 		static void encodersInterruptRight();
 };
-*/
