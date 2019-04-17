@@ -107,9 +107,9 @@ int Dbg::checkCmd()
 
 } //end  Dbg::checkCmd()
 
-int Dbg::getY()
-{
-    Serial.println("Dbg getY USB");
-    Serial1.println("Dbg getY BT");
-    return 5;
-}
+// int Dbg::getY()
+// {
+//     Serial.println("Dbg getY USB");
+//     Serial1.println("Dbg getY BT");
+//     return 5;
+// }

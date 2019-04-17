@@ -9,12 +9,9 @@ class Dbg
 void led(int state);
 
     void initialisation();
-    int getY();
-    int life = 3;
+    int sendVariable(int varName);
+    // int setVariable(int varName);
 
   private:
-    int x = 0;
-    int y = 0;
-
-    const int border_x_left = 0;
+    int potentiometer=222;
 };

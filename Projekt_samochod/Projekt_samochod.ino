@@ -5,6 +5,7 @@
 #if DBG_STA
 #include "Arduino.h"
 #include "Dbg.h"
+Dbg dbg;
 #endif
 
 #define A_ENABLE 2 //PWM
@@ -14,16 +15,28 @@
 #define B_PHASE 48 //0 - przod, 1 - tyl DIGITAL
 
 Car car;
-#if DBG_STA
-Dbg dbg;
-#endif
+
+// #include <ISADefinitions.h>
+#include <DueTimer.h>
+
+bool state = false;
+void dioda(){
+state = !state;
+digitalWrite(LED_BUILTIN,state);
+}
+
+//in setup:
+
+
 void setup()
 {
-  // put your setup code here, to run once:
   Serial.begin(9600);
 #if DBG_STA
   dbg.initialisation();
 #endif
+pinMode(LED_BUILTIN,OUTPUT);
+Timer4.attachInterrupt(dioda);
+Timer4.start(1000000);
 }
 
 void loop()
