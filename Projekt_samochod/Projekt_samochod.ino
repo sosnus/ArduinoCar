@@ -1,4 +1,7 @@
+ /* TODO: Staszek */ // #include "Arduino.h"
+
 #include "Car.h"
+ /* TODO: Staszek */ // #include "Dbg.h"
 
 #define A_ENABLE    2 //PWM
 #define A_PHASE     46  //0 - przod, 1 - tyl DIGITAL
@@ -7,15 +10,18 @@
 #define B_PHASE     48  //0 - przod, 1 - tyl DIGITAL
 
 Car car;
+ /* TODO: Staszek */ // Dbg dbg;
 
 void setup() 
 {
   // put your setup code here, to run once:
   Serial.begin(9600);
+    /* TODO: Staszek */ // dbg.initialisation();
 }
 
 void loop() 
 {
+     /* TODO: Staszek */ // dbg.checkCmd(); 
   // put your main code here, to run repeatedly:
   
   if(car.getDistanceF() > 40)
