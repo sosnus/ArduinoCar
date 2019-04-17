@@ -1,38 +1,30 @@
 #include "Car.h"
-
-#define A_ENABLE    2 //PWM
-#define A_PHASE     46  //0 - przod, 1 - tyl DIGITAL
-  
-#define B_ENABLE    3 //PWM
-#define B_PHASE     48  //0 - przod, 1 - tyl DIGITAL
-
 Car car;
 
-void setup() 
+void setup()
 {
-  // put your setup code here, to run once:
   Serial.begin(9600);
+
+  //włączenie detekcji przerwań przez encoder 
+  attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), &encodersInterruptLeft, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
 }
 
-void loop() 
+void loop()
 {
-  // put your main code here, to run repeatedly:
-  
-  if(car.getDistanceF() > 40)
+  if(car.getDistance(FRONT) > 40)
     setEngines(150);
-  else if(car.getDistanceF() < 40)
+  else if(car.getDistance(FRONT) < 40)
     setEngines(0);
-  
-  /*
+
   Serial.print("Distance: "); 
-  Serial.print(car.getDistanceF()); 
+  Serial.print(car.getDistance(FRONT)); 
   Serial.println(" cm");
-  delay(500);
-  */
+  delay(500);  
 }
 
 void setEngines(int power)
 {
-    car.setPowerLevel("left", power);
-    car.setPowerLevel("right", power);
+  car.setPowerLevel(Direction::LEFT, power);
+  car.setPowerLevel(Direction::RIGHT, power);
 }
