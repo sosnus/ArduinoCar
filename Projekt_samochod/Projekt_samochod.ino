@@ -16,17 +16,30 @@ void setup()
 #if DBG_STA
   dbg.initialisation();
 #endif
+
+  //włączenie detekcji przerwań przez encoder 
+  attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), &encodersInterruptLeft, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
 #if DBG_STA
   dbg.checkCmd();
 #endif
 
-  Serial.print("Distance: ");
-  Serial.print(car.getDistanceF());
+    setEngines(150);
+  else if(car.getDistance(FRONT) < 40)
+    setEngines(0);
+
+  Serial.print("Distance: "); 
+  Serial.print(car.getDistance(FRONT)); 
   Serial.println(" cm");
-  delay(500);
+  delay(500);  
+}
+
+void setEngines(int power)
+{
+  car.setPowerLevel(Direction::LEFT, power);
+  car.setPowerLevel(Direction::RIGHT, power);
 }
