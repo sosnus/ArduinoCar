@@ -3,14 +3,15 @@
 
 #include <DueTimer.h>
 
-void Dbg::dioda(){
-state = !state;
-digitalWrite(LED_BUILTIN,state);
+void Dbg::dioda()
+{
+    state = !state;
+    digitalWrite(LED_BUILTIN, state);
 }
 
 enum frameErr
 {
-    ok = 0, //OK
+    ok = 0,       //OK
     badFrame = 1, //Without '@'
     badCmd = 2,
     endMethodReached = 3,
@@ -18,9 +19,9 @@ enum frameErr
     przykladktorystam = 40 //przy "wartości" ostatniej przecinka nie stosuje się
 };
 
-Dbg::Dbg()
-{
-}
+// Dbg::Dbg()
+// {
+// }
 
 // __attribute__ ((weak))
 void Dbg::led(int state)
@@ -31,6 +32,8 @@ void Dbg::led(int state)
 
 void Dbg::initialisation()
 {
+    Timer4.attachInterrupt(drukuj);
+    Timer4.start(1000000);
     pinMode(LED_BUILTIN, OUTPUT);
     // Serial.begin(57600);
     Serial1.begin(57600);
@@ -44,14 +47,14 @@ void Dbg::initialisation()
     Serial1.println(compile_date);
     Serial1.println("Dbg init BT");
 
-    pinMode(LED_BUILTIN,OUTPUT);
-//  Timer4.attachInterrupt(dioda);
-//  Timer4.attachInterrupt(dioda());
-//  Timer4.attachInterrupt(this->dioda());
-// //  Timer4.attachInterrupt(Dbg::dioda);
-//  Timer4.attachInterrupt(this -> dioda);
+    pinMode(LED_BUILTIN, OUTPUT);
+    //  Timer4.attachInterrupt(dioda);
+    //  Timer4.attachInterrupt(dioda());
+    //  Timer4.attachInterrupt(this->dioda());
+    // //  Timer4.attachInterrupt(Dbg::dioda);
+    //  Timer4.attachInterrupt(this -> dioda);
 
-/*
+    /*
 this -> dioda();
 delay(200);
 this -> dioda();
@@ -73,7 +76,14 @@ delay(200);
 this -> dioda();
 delay(200);
 */
-// Timer4.start(1000000);
+    // Timer4.start(1000000);
+}
+
+void Dbg::drukuj()
+{
+    Serial1.println("Dbg::drukuj() timer ");
+    // digitalWrite(LED1, OUTPUT);
+    //  state = !state;
 }
 
 int Dbg::checkCmd()
@@ -93,14 +103,14 @@ int Dbg::checkCmd()
                 if (inByte == '1')
                 {
                     Serial1.write("CMD=<LED_ON>");
-                    this -> led(1);
+                    led(1);
                     // digitalWrite(LED_BUILTIN, 1);
                     return frameErr::ok;
                 }
                 else
                 {
                     Serial1.write("CMD=<LED_OFF>");
-                    this -> led(0);
+                    led(0);
 
                     // digitalWrite(LED_BUILTIN, 0);
                     return frameErr::ok;
@@ -109,7 +119,7 @@ int Dbg::checkCmd()
             else if (inByte == 'M')
             {
                 Serial1.write(" TYPE=<M>");
-                    return frameErr::ok;
+                return frameErr::ok;
             }
             else
             {
@@ -117,7 +127,7 @@ int Dbg::checkCmd()
                 Serial1.write("<");
                 Serial1.write(inByte);
                 Serial1.write(">");
-                    return  frameErr::badCmd;
+                return frameErr::badCmd;
             }
         }    // end '@' EVENT
         else // not '@'
@@ -132,17 +142,17 @@ int Dbg::checkCmd()
                 }
                 else
                 {
-                Serial1.write("ERR_CLEAN_BUFF  ");
+                    Serial1.write("ERR_CLEAN_BUFF  ");
                     Serial1.write("<");
                     Serial1.write(inByte);
                     Serial1.write(">");
                 }
                 inByte = Serial1.read();
             }
-            return  frameErr::badFrame;
+            return frameErr::badFrame;
         } // end  // not '@'
 
     } // if (Serial1.available())
-    return  frameErr::endMethodReached;
+    return frameErr::endMethodReached;
 
 } //end  Dbg::checkCmd()

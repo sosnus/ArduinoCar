@@ -5,16 +5,29 @@
 #if DBG_STA
 #include "Arduino.h"
 #include "Dbg.h"
-Dbg dbg;
+// Dbg dbg;
 #endif
 
+// #include <ISADefinitions.h>
+
+
 Car car;
+
+
+   void drukuj()
+   { 
+  Serial.println("drukuj "); 
+      // digitalWrite(LED1, OUTPUT);
+    //  state = !state; 
+      }
+
 
 void setup()
 {
   Serial.begin(9600);
 #if DBG_STA
-  dbg.initialisation();
+  Dbg::initialisation();
+
 #endif
 
   //włączenie detekcji przerwań przez encoder 
@@ -25,7 +38,7 @@ void setup()
 void loop()
 {
 #if DBG_STA
-  dbg.checkCmd();
+  Dbg::checkCmd();
 #endif
 
  if(car.getDistance(FRONT) > 40)

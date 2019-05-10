@@ -4,18 +4,38 @@
 class Dbg
 {
   public:
-    Dbg(); //include init
-    int checkCmd();
-    void dioda();
-    void led(int state);
+    //Dbg(); //include init
+    static int checkCmd();
+    static void dioda();
+    static void drukuj();
+    static void led(int state);
 
-    void initialisation();
-    int sendVariable(int varName);
+    static void initialisation();
+    static int sendVariable(int varName);
     // int setVariable(int varName);
 
   private:
-    int potentiometer=222;
-    bool state = false;
+    static int potentiometer;
+    static bool state;
 };
+
+
+// class Dbg
+// {
+//   public:
+//     Dbg(); //include init
+//     int checkCmd();
+//     void dioda();
+//     void drukuj();
+//     void led(int state);
+
+//     void initialisation();
+//     int sendVariable(int varName);
+//     // int setVariable(int varName);
+
+//   private:
+//     int potentiometer=222;
+//     bool state = false;
+// };
 
 // void dioda(){
