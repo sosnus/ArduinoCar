@@ -1,7 +1,6 @@
 #define DBG_STA 1
 
 #include "Car.h"
-#include <DueTimer.h>
 
 #if DBG_STA
 #include "Arduino.h"
@@ -9,20 +8,7 @@
 Dbg dbg;
 #endif
 
-#define A_ENABLE 2 //PWM
-#define A_PHASE 46 //0 - przod, 1 - tyl DIGITAL
-
-#define B_ENABLE 3 //PWM
-#define B_PHASE 48 //0 - przod, 1 - tyl DIGITAL
-
 Car car;
-
-// #include <ISADefinitions.h>
-
-
-
-//in setup:
-
 
 void setup()
 {
@@ -30,8 +16,6 @@ void setup()
 #if DBG_STA
   dbg.initialisation();
 #endif
-  // Timer4.attachInterrupt(dbg.dioda);
-
 }
 
 void loop()
@@ -41,21 +25,8 @@ void loop()
   dbg.checkCmd();
 #endif
 
-  /*
-  if(car.getDistanceF() > 40)
-    setEngines(150);
-  else if(car.getDistanceF() < 40)
-    setEngines(0);
-  */
   Serial.print("Distance: ");
   Serial.print(car.getDistanceF());
   Serial.println(" cm");
   delay(500);
 }
-/*
-void setEngines(int power)
-{
-    car.setPowerLevel("left", power);
-    car.setPowerLevel("right", power);
-}
-*/

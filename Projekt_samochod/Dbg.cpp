@@ -3,15 +3,10 @@
 
 #include <DueTimer.h>
 
-
-
-// bool state = false;
 void Dbg::dioda(){
 state = !state;
 digitalWrite(LED_BUILTIN,state);
 }
-
-
 
 enum frameErr
 {
@@ -22,8 +17,6 @@ enum frameErr
     //...
     przykladktorystam = 40 //przy "wartości" ostatniej przecinka nie stosuje się
 };
-
-
 
 Dbg::Dbg()
 {
@@ -153,10 +146,3 @@ int Dbg::checkCmd()
     return  frameErr::endMethodReached;
 
 } //end  Dbg::checkCmd()
-
-// int Dbg::getY()
-// {
-//     Serial.println("Dbg getY USB");
-//     Serial1.println("Dbg getY BT");
-//     return 5;
-// }
