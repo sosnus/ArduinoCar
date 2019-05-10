@@ -1,4 +1,4 @@
-/*
+
 #ifndef _QMC5883_HPP_
 #define _QMC5883_HPP_
 
@@ -45,5 +45,3 @@ class QMC5883
 };
 
 #endif // _QMC5883_HPP_
-
-*/

@@ -1,5 +1,6 @@
-/*
+
 #include <Wire.h>
+#include <Arduino.h>
 #include "QMC5883.h"
 
 
@@ -59,4 +60,3 @@ void QMC5883::measure(void)
 	this->z = z;
 	//interrupts();
 }
-*/
