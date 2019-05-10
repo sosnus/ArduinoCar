@@ -1,6 +1,7 @@
 #define DBG_STA 1
 
 #include "Car.h"
+#include <DueTimer.h>
 
 #if DBG_STA
 #include "Arduino.h"
@@ -17,13 +18,8 @@ Dbg dbg;
 Car car;
 
 // #include <ISADefinitions.h>
-#include <DueTimer.h>
 
-bool state = false;
-void dioda(){
-state = !state;
-digitalWrite(LED_BUILTIN,state);
-}
+
 
 //in setup:
 
@@ -34,9 +30,8 @@ void setup()
 #if DBG_STA
   dbg.initialisation();
 #endif
-pinMode(LED_BUILTIN,OUTPUT);
-Timer4.attachInterrupt(dioda);
-Timer4.start(1000000);
+  // Timer4.attachInterrupt(dbg.dioda);
+
 }
 
 void loop()
