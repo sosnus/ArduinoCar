@@ -1,22 +1,32 @@
- /* TODO: Staszek */ // #include "Arduino.h"
+#define DBG_STA 1
 
 #include "Car.h"
 
+#if DBG_STA
+#include "Arduino.h"
+#include "Dbg.h"
+Dbg dbg;
+#endif
+
 Car car;
- /* TODO: Staszek */ // Dbg dbg;
 
 void setup()
 {
   Serial.begin(9600);
+#if DBG_STA
+  dbg.initialisation();
+#endif
 
   //włączenie detekcji przerwań przez encoder 
   attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), &encodersInterruptLeft, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
-    /* TODO: Staszek */ // dbg.initialisation();
 }
 
 void loop()
 {
+#if DBG_STA
+  dbg.checkCmd();
+#endif
 
     setEngines(150);
   else if(car.getDistance(FRONT) < 40)
