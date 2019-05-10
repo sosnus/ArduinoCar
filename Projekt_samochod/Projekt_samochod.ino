@@ -28,6 +28,7 @@ void loop()
   dbg.checkCmd();
 #endif
 
+ if(car.getDistance(FRONT) > 40)
     setEngines(150);
   else if(car.getDistance(FRONT) < 40)
     setEngines(0);
