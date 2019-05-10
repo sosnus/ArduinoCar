@@ -1,5 +1,9 @@
+ /* TODO: Staszek */ // #include "Arduino.h"
+
 #include "Car.h"
+
 Car car;
+ /* TODO: Staszek */ // Dbg dbg;
 
 void setup()
 {
@@ -8,11 +12,12 @@ void setup()
   //włączenie detekcji przerwań przez encoder 
   attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), &encodersInterruptLeft, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
+    /* TODO: Staszek */ // dbg.initialisation();
 }
 
 void loop()
 {
-  if(car.getDistance(FRONT) > 40)
+
     setEngines(150);
   else if(car.getDistance(FRONT) < 40)
     setEngines(0);
