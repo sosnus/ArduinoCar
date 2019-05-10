@@ -19,10 +19,6 @@ enum frameErr
     przykladktorystam = 40 //przy "wartości" ostatniej przecinka nie stosuje się
 };
 
-// Dbg::Dbg()
-// {
-// }
-
 // __attribute__ ((weak))
 void Dbg::led(int state)
 {
@@ -35,9 +31,7 @@ void Dbg::initialisation()
     Timer4.attachInterrupt(drukuj);
     Timer4.start(1000000);
     pinMode(LED_BUILTIN, OUTPUT);
-    // Serial.begin(57600);
     Serial1.begin(57600);
-    // Serial.println("Dbg init USB");
     const char compile_date[] = __DATE__ " " __TIME__;
     Serial1.println(" ");
     Serial1.println(" ");
@@ -45,43 +39,29 @@ void Dbg::initialisation()
     Serial1.println(" ");
     Serial1.println("======================================");
     Serial1.println(compile_date);
-    Serial1.println("Dbg init BT");
+    Serial1.println("Dbg init BT (Serial1)");
 
     pinMode(LED_BUILTIN, OUTPUT);
-    //  Timer4.attachInterrupt(dioda);
-    //  Timer4.attachInterrupt(dioda());
-    //  Timer4.attachInterrupt(this->dioda());
-    // //  Timer4.attachInterrupt(Dbg::dioda);
-    //  Timer4.attachInterrupt(this -> dioda);
+}
 
-    /*
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-this -> dioda();
-delay(200);
-*/
-    // Timer4.start(1000000);
+String Dbg::content = "default dbg content";
+
+// void Dbg::setContent(string )
+
+void Dbg::change()
+{
+    Dbg::content = "aaaa";
+}
+
+void Dbg::setContent(String s)
+{
+    Dbg::content = s;
 }
 
 void Dbg::drukuj()
 {
-    Serial1.println("Dbg::drukuj() timer ");
+    Serial1.println(Dbg::content);
+    // Serial1.println("Dbg::drukuj() timer ");
     // digitalWrite(LED1, OUTPUT);
     //  state = !state;
 }

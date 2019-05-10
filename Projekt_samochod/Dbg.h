@@ -14,6 +14,11 @@ class Dbg
     static int sendVariable(int varName);
     // int setVariable(int varName);
 
+    static String content;
+    static void change();
+  static void setContent(String s);
+
+
   private:
     static int potentiometer;
     static bool state;

@@ -5,22 +5,9 @@
 #if DBG_STA
 #include "Arduino.h"
 #include "Dbg.h"
-// Dbg dbg;
 #endif
 
-// #include <ISADefinitions.h>
-
-
 Car car;
-
-
-   void drukuj()
-   { 
-  Serial.println("drukuj "); 
-      // digitalWrite(LED1, OUTPUT);
-    //  state = !state; 
-      }
-
 
 void setup()
 {
@@ -30,7 +17,7 @@ void setup()
 
 #endif
 
-  //włączenie detekcji przerwań przez encoder 
+  //włączenie detekcji przerwań przez encoder
   attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), &encodersInterruptLeft, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
 }
@@ -40,16 +27,18 @@ void loop()
 #if DBG_STA
   Dbg::checkCmd();
 #endif
-
- if(car.getDistance(FRONT) > 40)
+  if (car.getDistance(FRONT) > 40)
     setEngines(150);
-  else if(car.getDistance(FRONT) < 40)
+  else if (car.getDistance(FRONT) < 40)
     setEngines(0);
 
-  Serial.print("Distance: "); 
-  Serial.print(car.getDistance(FRONT)); 
+  Serial.print("Distance: ");
+  Serial.print(car.getDistance(FRONT));
   Serial.println(" cm");
-  delay(500);  
+  delay(2400);
+  // Dbg::change();
+  Dbg::setContent("moj tekst");
+  // Dbg::content = "custom content!!";
 }
 
 void setEngines(int power)
