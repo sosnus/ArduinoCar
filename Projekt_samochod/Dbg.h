@@ -6,7 +6,8 @@ class Dbg
   public:
     Dbg(); //include init
     int checkCmd();
-void led(int state);
+    void dioda();
+    void led(int state);
 
     void initialisation();
     int sendVariable(int varName);
@@ -14,4 +15,7 @@ void led(int state);
 
   private:
     int potentiometer=222;
+    bool state = false;
 };
+
+// void dioda(){

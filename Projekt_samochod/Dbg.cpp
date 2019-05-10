@@ -1,6 +1,17 @@
 #include "Arduino.h"
 #include "Dbg.h"
 
+#include <DueTimer.h>
+
+
+
+// bool state = false;
+void Dbg::dioda(){
+state = !state;
+digitalWrite(LED_BUILTIN,state);
+}
+
+
 
 enum frameErr
 {
@@ -31,9 +42,45 @@ void Dbg::initialisation()
     // Serial.begin(57600);
     Serial1.begin(57600);
     // Serial.println("Dbg init USB");
+    const char compile_date[] = __DATE__ " " __TIME__;
+    Serial1.println(" ");
+    Serial1.println(" ");
+    Serial1.println(" ");
     Serial1.println(" ");
     Serial1.println("======================================");
+    Serial1.println(compile_date);
     Serial1.println("Dbg init BT");
+
+    pinMode(LED_BUILTIN,OUTPUT);
+//  Timer4.attachInterrupt(dioda);
+//  Timer4.attachInterrupt(dioda());
+//  Timer4.attachInterrupt(this->dioda());
+// //  Timer4.attachInterrupt(Dbg::dioda);
+//  Timer4.attachInterrupt(this -> dioda);
+
+/*
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+this -> dioda();
+delay(200);
+*/
+// Timer4.start(1000000);
 }
 
 int Dbg::checkCmd()
