@@ -13,10 +13,13 @@ Car::Car()
     pinMode(US_RIGHT_ECHO_PIN, INPUT);
 
     //======== Silnik
-    pinMode(A_PHASE, OUTPUT);
-    pinMode(A_ENABLE, OUTPUT);
-    pinMode(B_PHASE, OUTPUT);
-    pinMode(B_ENABLE, OUTPUT);
+  pinMode(LEFT_PWM, OUTPUT);
+  pinMode(LEFT_IN1, OUTPUT);
+  pinMode(LEFT_IN2, OUTPUT);
+  
+  pinMode(RIGHT_PWM, OUTPUT);
+  pinMode(RIGHT_IN1, OUTPUT);
+  pinMode(RIGHT_IN2, OUTPUT);
 
     //======== ENCODERS
     car.leftEncoderCounter = 0;
@@ -67,49 +70,44 @@ double Car::getDistance(Direction dir)
 void Car::setPowerLevel(Direction dir, int level)
 {
     level = constrain(level, -255, 255);
-    switch (dir)
-    {
-        case LEFT:
-            if (level > 0)
-            {
-                // do przodu
-                digitalWrite(B_PHASE, 1);
-                analogWrite(B_ENABLE, level);
-            }
-            else if (level < 0)
-            {
-                // do tyłu
-                digitalWrite(B_PHASE, 0);
-                analogWrite(B_ENABLE, -level);
-            }
-            else
-            {
-                // stop
-                digitalWrite(B_PHASE, 0);
-                analogWrite(B_ENABLE, 0);
-            }
-            break;
-        case RIGHT:
-            if (level > 0)
-            {
-                // do przodu
-                digitalWrite(A_PHASE, 1);
-                analogWrite(A_ENABLE, level);
-            }
-            else if (level < 0)
-            {
-                // do tyłu
-                digitalWrite(A_PHASE, 0);
-                analogWrite(A_ENABLE, -level);
-            }
-            else
-            {
-                // stop
-                digitalWrite(A_PHASE, 0);
-                analogWrite(A_ENABLE, 0);
-            }
-            break;
+
+  if (dir == Direction::LEFT) {
+    if (level > 0) {
+      // do przodu
+      digitalWrite(LEFT_IN1, false);
+      digitalWrite(LEFT_IN2, true);
+      analogWrite(LEFT_PWM, level);
+    } else if (level < 0) {
+      // do tyłu
+      digitalWrite(LEFT_IN1, true);
+      digitalWrite(LEFT_IN2, false);
+      analogWrite(LEFT_PWM, -level);
+    } else {
+      // stop (soft)
+      digitalWrite(LEFT_IN1, true);
+      digitalWrite(LEFT_IN2, true);
+      analogWrite(LEFT_PWM, 0);
     }
+  }
+  
+  if (dir == Direction::RIGHT) {
+    if (level > 0) {
+      // do przodu
+      digitalWrite(RIGHT_IN1, true);
+      digitalWrite(RIGHT_IN2, false);
+      analogWrite(RIGHT_PWM, level);
+    } else if (level < 0) {
+      // do tyłu
+      digitalWrite(RIGHT_IN1, false);
+      digitalWrite(RIGHT_IN2, true);
+      analogWrite(RIGHT_PWM, -level);
+    } else {
+      // stop (soft)
+      digitalWrite(RIGHT_IN1, true);
+      digitalWrite(RIGHT_IN2, true);
+      analogWrite(RIGHT_PWM, 0);
+    }
+  } 
 }
 
 
