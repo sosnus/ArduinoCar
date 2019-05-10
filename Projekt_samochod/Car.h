@@ -2,6 +2,8 @@
 #define Car_h
 #include <avr/pgmspace.h>
 #include <Arduino.h>
+#include <Math.h>
+#include "QMC5883.h"
 
 enum Direction
 {
@@ -34,7 +36,7 @@ enum Direction
 #define RIGHT_IN2   44  // in4 (l298n)
 
 class Car;
-extern Car car;
+//extern Car car;
 
 class Car
 {
@@ -42,14 +44,46 @@ class Car
     int leftEncoderCounter, rightEncoderCounter;
     
     Car();
-  
+    ~Car();
+    
+    void init(); 
   	double getDistance(Direction dir);
   	void setPowerLevel(Direction dir, int level);
   	int getEncoderCount(Direction dir);
+    void setSide(int torqueLeft, int torqueRight, Direction dir);
+    void turnCar(int leftTorque, int rightTorque);
+    bool checkRightAngle();
+
+  public:
+    float startAngle, actualAngle;
+    QMC5883 qmc;
 };
 
-
+/*
 void encodersInterruptLeft();
 void encodersInterruptRight();
+*/
 
+
+/*
+void cmd_qmc(void)
+{
+  char buffer[64];
+
+  qmc.reset();
+  while (Serial.available() == 0)
+  {
+    qmc.measure();
+    int16_t x = qmc.getX();
+    int16_t y = qmc.getY();
+    int16_t z = qmc.getZ();
+
+    sprintf(buffer, "\n X=%5d Y=%5d Z=%5d", x, y, z);
+    Serial.print(buffer);
+  }
+  
+  while (Serial.available())
+    Serial.read();  
+}
+*/
 #endif

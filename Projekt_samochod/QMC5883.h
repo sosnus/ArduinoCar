@@ -30,6 +30,7 @@ class QMC5883
 {
 	private:
 		int16_t x, y, z;
+		float a;
 
 		void writeRegister(uint8_t reg, uint8_t value);
 	public:
@@ -37,11 +38,14 @@ class QMC5883
 		void reset(void);
 
 		void measure(void);
+
+		float azimuth(int16_t a,int16_t b);
 	
 	public:
-		int16_t getX(void) const { return this->x; }
-		int16_t getY(void) const { return this->y; }
-		int16_t getZ(void) const { return this->z; }
+		int16_t getX(void) { return this->x; }
+		int16_t getY(void) { return this->y; }
+		int16_t getZ(void) { return this->z; }
+		float getAngle() {return this->a; }
 };
 
 #endif // _QMC5883_HPP_

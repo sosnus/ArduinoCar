@@ -2,6 +2,12 @@
 
 Car::Car()
 {
+  
+}
+
+void Car::init()
+{
+  Serial.begin(9600);
     //======== Sensor Odległości
     pinMode(US_FRONT_TRIGGER_PIN, OUTPUT);
     pinMode(US_FRONT_ECHO_PIN, INPUT);
@@ -22,10 +28,19 @@ Car::Car()
   pinMode(RIGHT_IN2, OUTPUT);
 
     //======== ENCODERS
-    car.leftEncoderCounter = 0;
-    car.rightEncoderCounter = 0;
+    leftEncoderCounter = 0;
+    rightEncoderCounter = 0;
     pinMode(ENCODER_LEFT, INPUT);
     pinMode(ENCODER_RIGHT, INPUT);
+
+    //======== KOMPASS
+    Wire.begin();
+    qmc.init();
+}
+
+Car::~Car()
+{
+    Serial.println("car destructor");
 }
 
 double Car::getDistance(Direction dir)
@@ -110,6 +125,64 @@ void Car::setPowerLevel(Direction dir, int level)
   } 
 }
 
+void Car::setSide(int torqueLeft, int torqueRight, Direction dir)
+{
+  switch(dir)
+  {
+    case LEFT:
+      turnCar(-torqueLeft,torqueRight);
+    break;
+    case RIGHT:
+      turnCar(torqueLeft,-torqueRight);
+    break;
+  }
+}
+
+void Car::turnCar(int leftTorque, int rightTorque)
+{
+  int x,y,z;
+  bool check = true;
+  
+    qmc.reset();
+    qmc.measure();
+    x = qmc.getX();
+    y = qmc.getY();
+    z = qmc.getZ();
+    startAngle = qmc.getAngle();
+
+
+  while(check)
+  {
+    setPowerLevel(LEFT, leftTorque);
+    setPowerLevel(RIGHT, rightTorque);
+
+    qmc.reset();
+    qmc.measure();
+    x = qmc.getX();
+    y = qmc.getY();
+    z = qmc.getZ();
+    actualAngle = qmc.getAngle();
+    Serial.println(actualAngle);
+    checkRightAngle();
+  }
+
+  setPowerLevel(LEFT, 0);
+  setPowerLevel(RIGHT, 0);
+}
+
+bool Car::checkRightAngle()
+{ 
+  int checkAng = actualAngle;
+
+  if(startAngle > 269 && actualAngle >= 0)
+    checkAng += 360; 
+  
+  if(abs(checkAng - startAngle) > 85)
+    return false;
+  else 
+    return true;
+}
+
 
 //======== ENCODERS
 
@@ -126,7 +199,7 @@ int Car::getEncoderCount(Direction dir)
       break;
   }
 }
-
+/*
 void encodersInterruptRight()
 {
   car.rightEncoderCounter++;
@@ -136,3 +209,4 @@ void encodersInterruptLeft()
 {
   car.leftEncoderCounter++;
 }
+*/
