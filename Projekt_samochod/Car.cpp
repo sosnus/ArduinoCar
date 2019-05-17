@@ -28,8 +28,6 @@ void Car::init()
   pinMode(RIGHT_IN2, OUTPUT);
 
     //======== ENCODERS
-    leftEncoderCounter = 0;
-    rightEncoderCounter = 0;
     pinMode(ENCODER_LEFT, INPUT);
     pinMode(ENCODER_RIGHT, INPUT);
 
@@ -199,29 +197,53 @@ bool Car::checkRightAngle()
 }
 
 
-//======== ENCODERS
-
-
-int Car::getEncoderCount(Direction dir)
-{
-  switch (dir)
+void Car::squaredDrive(int torque, int &leftEncoder, int &rightEncoder) // jazda po prostokącie 
+{ 
+  straightAndTurn(torque, 40, leftEncoder, rightEncoder); 
+  straightAndTurn(torque, 20, leftEncoder, rightEncoder); 
+  straightAndTurn(torque, 40, leftEncoder, rightEncoder); 
+  straightAndTurn(torque, 20, leftEncoder, rightEncoder); 
+} 
+ 
+void Car::straightAndTurn(int torque, int amountEncoder, int &leftEncoder, int &rightEncoder) //jedz prosto przez ilość sygnałów z enkodera i skręć 
+{    
+  leftEncoder=0;
+  rightEncoder=0;
+  
+  while(leftEncoder < amountEncoder) 
   {
-    case LEFT:
-      return leftEncoderCounter;
-      break;
-    case RIGHT:
-      return rightEncoderCounter;
-      break;
-  }
+  Serial.print("L=");
+  Serial.print(leftEncoder);
+  Serial.print("\tR=");
+  Serial.println(rightEncoder);
+    setPowerLevel(LEFT, torque); 
+    setPowerLevel(RIGHT, torque); 
+ 
+    //tu później wstawić sprawdzanie przeszkód 
+  } 
+  setSide(torque,torque,LEFT);
 }
-/*
-void encodersInterruptRight()
-{
-  car.rightEncoderCounter++;
-}
+ 
+void Car::straightDrive(int torque, Direction dir) // zabezpieczyć lepiej  
+{ 
+  Direction newDir; 
+   
+  newDir = changeDir(dir); 
+ 
+  while(getDistance(newDir) < 60 && getDistance(FRONT) > 40) 
+  { 
+    setPowerLevel(LEFT, torque); 
+    setPowerLevel(RIGHT, torque); 
+    //Zliczanie sygnałów enkodera 
+  } 
+} 
+ 
+Direction changeDir(Direction dir) 
+{ 
+  if(dir == LEFT) 
+    return RIGHT; 
+  else 
+    return LEFT;  
+} 
 
-void encodersInterruptLeft()
-{
-  car.leftEncoderCounter++;
-}
-*/
+

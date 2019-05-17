@@ -1,7 +1,10 @@
 #include "Car.h"
 
 Car car;
-int torque = 150;
+int torque = 255;
+
+int leftEncoderCounter=0;
+int rightEncoderCounter=0;
 
 void setup()
 {
@@ -10,8 +13,8 @@ void setup()
   car.init();
 
   //włączenie detekcji przerwań przez encoder 
-  //attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), &encodersInterruptLeft, CHANGE);
-  //attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), &encodersInterruptLeft, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), &encodersInterruptRight, CHANGE);
   Serial.print("Distance: "); 
 }
 
@@ -19,6 +22,7 @@ void setup()
 
 void loop()
 {
+  /*
   if(car.getDistance(FRONT) > 60)
     setEngines(150);
   else
@@ -33,6 +37,11 @@ void loop()
   Serial.print(" cm \t Angle: ");
   Serial.println(car.qmc.getAngle());
   delay(500);  
+
+  */
+
+  car.squaredDrive(torque, leftEncoderCounter, rightEncoderCounter);
+  
 }
 
 void setEngines(int power)
@@ -41,4 +50,14 @@ void setEngines(int power)
   car.setPowerLevel(Direction::RIGHT, power);
 }
 
+
+void encodersInterruptRight()
+{
+  rightEncoderCounter++;
+}
+
+void encodersInterruptLeft()
+{
+  leftEncoderCounter++;
+}
 
