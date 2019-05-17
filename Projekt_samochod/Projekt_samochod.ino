@@ -31,15 +31,15 @@ void loop()
     car.setSide(torque,torque,LEFT);
   }
 
-  car.qmc.measure();
   Serial.print("Distance: "); 
   Serial.print(car.getDistance(FRONT)); 
+
+  car.qmc.measure();
   Serial.print(" cm \t Angle: ");
   Serial.println(car.qmc.getAngle());
   delay(500);  
 
   */
-
   car.squaredDrive(torque, leftEncoderCounter, rightEncoderCounter);
   
 }

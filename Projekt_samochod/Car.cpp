@@ -138,6 +138,34 @@ void Car::setSide(int torqueLeft, int torqueRight, Direction dir)
 
 void Car::turnCar(int leftTorque, int rightTorque)
 {
+  float oldAlpha;
+  float newAlpha;
+  float deltaAlpha;
+  float sumAlpha=0;
+
+  qmc.measure();
+  oldAlpha = qmc.getAngle();
+
+  do
+  {
+    qmc.measure();
+    newAlpha = qmc.getAngle();;
+
+    deltaAlpha = newAlpha - oldAlpha;
+
+    sumAlpha += deltaAlpha;
+    oldAlpha = newAlpha;
+    
+    Serial.print("suma=");
+    Serial.println(sumAlpha);
+    
+    setPowerLevel(LEFT, leftTorque);
+    setPowerLevel(RIGHT, rightTorque);
+  }
+  while( abs(sumAlpha) <= 88);
+  
+  
+  /*
   int x,y,z;
   bool check = true;
   
@@ -177,7 +205,7 @@ void Car::turnCar(int leftTorque, int rightTorque)
     Serial.print("\tActual=");
     Serial.println(actualAngle);
     check = checkRightAngle();
-  }
+  }*/
 
   setPowerLevel(LEFT, 0);
   setPowerLevel(RIGHT, 0);
