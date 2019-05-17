@@ -19,11 +19,11 @@ void setup()
 
 void loop()
 {
-  if(car.getDistance(FRONT) > 40)
+  if(car.getDistance(FRONT) > 60)
     setEngines(150);
-  else if(car.getDistance(FRONT) < 40)
+  else
   {
-    //setEngines(0);
+    setEngines(0);
     car.setSide(torque,torque,LEFT);
   }
 

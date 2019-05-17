@@ -143,12 +143,20 @@ void Car::turnCar(int leftTorque, int rightTorque)
   int x,y,z;
   bool check = true;
   
-    qmc.reset();
+    //qmc.reset();
     qmc.measure();
     x = qmc.getX();
     y = qmc.getY();
     z = qmc.getZ();
     startAngle = qmc.getAngle();
+    Serial.print("x=");
+    Serial.print(x);
+    Serial.print("\ty=");
+    Serial.print(y);
+    Serial.print("\tz=");
+    Serial.print(z);
+    Serial.print("\tStart=");
+    Serial.println(startAngle);
 
 
   while(check)
@@ -156,14 +164,21 @@ void Car::turnCar(int leftTorque, int rightTorque)
     setPowerLevel(LEFT, leftTorque);
     setPowerLevel(RIGHT, rightTorque);
 
-    qmc.reset();
+    //qmc.reset();
     qmc.measure();
     x = qmc.getX();
     y = qmc.getY();
     z = qmc.getZ();
     actualAngle = qmc.getAngle();
+    Serial.print("x=");
+    Serial.print(x);
+    Serial.print("\ty=");
+    Serial.print(y);
+    Serial.print("\tz=");
+    Serial.print(z);
+    Serial.print("\tActual=");
     Serial.println(actualAngle);
-    checkRightAngle();
+    check = checkRightAngle();
   }
 
   setPowerLevel(LEFT, 0);
@@ -177,7 +192,7 @@ bool Car::checkRightAngle()
   if(startAngle > 269 && actualAngle >= 0)
     checkAng += 360; 
   
-  if(abs(checkAng - startAngle) > 85)
+  if(abs(checkAng - startAngle) > 88)
     return false;
   else 
     return true;
