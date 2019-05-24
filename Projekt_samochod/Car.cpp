@@ -2,6 +2,12 @@
 
 Car::Car()
 {
+  
+}
+
+void Car::init()
+{
+  Serial.begin(9600);
     //======== Sensor Odległości
     pinMode(US_FRONT_TRIGGER_PIN, OUTPUT);
     pinMode(US_FRONT_ECHO_PIN, INPUT);
@@ -22,10 +28,17 @@ Car::Car()
   pinMode(RIGHT_IN2, OUTPUT);
 
     //======== ENCODERS
-    car.leftEncoderCounter = 0;
-    car.rightEncoderCounter = 0;
     pinMode(ENCODER_LEFT, INPUT);
     pinMode(ENCODER_RIGHT, INPUT);
+
+    //======== KOMPASS
+    Wire.begin();
+    qmc.init();
+}
+
+Car::~Car()
+{
+    Serial.println("car destructor");
 }
 
 double Car::getDistance(Direction dir)
@@ -110,29 +123,153 @@ void Car::setPowerLevel(Direction dir, int level)
   } 
 }
 
-
-//======== ENCODERS
-
-
-int Car::getEncoderCount(Direction dir)
+void Car::setSide(int torqueLeft, int torqueRight, Direction dir)
 {
-  switch (dir)
+  switch(dir)
   {
     case LEFT:
-      return leftEncoderCounter;
-      break;
+      turnCar(-torqueLeft,torqueRight);
+    break;
     case RIGHT:
-      return rightEncoderCounter;
-      break;
+      turnCar(torqueLeft,-torqueRight);
+    break;
   }
 }
 
-void encodersInterruptRight()
+void Car::turnCar(int leftTorque, int rightTorque)
 {
-  car.rightEncoderCounter++;
+  float oldAlpha;
+  float newAlpha;
+  float deltaAlpha;
+  float sumAlpha=0;
+
+  qmc.measure();
+  oldAlpha = qmc.getAngle();
+
+  do
+  {
+    qmc.measure();
+    newAlpha = qmc.getAngle();;
+
+    deltaAlpha = newAlpha - oldAlpha;
+
+    sumAlpha += deltaAlpha;
+    oldAlpha = newAlpha;
+    
+    Serial.print("suma=");
+    Serial.println(sumAlpha);
+    
+    setPowerLevel(LEFT, leftTorque);
+    setPowerLevel(RIGHT, rightTorque);
+  }
+  while( abs(sumAlpha) <= 88);
+  
+  
+  /*
+  int x,y,z;
+  bool check = true;
+  
+    //qmc.reset();
+    qmc.measure();
+    x = qmc.getX();
+    y = qmc.getY();
+    z = qmc.getZ();
+    startAngle = qmc.getAngle();
+    Serial.print("x=");
+    Serial.print(x);
+    Serial.print("\ty=");
+    Serial.print(y);
+    Serial.print("\tz=");
+    Serial.print(z);
+    Serial.print("\tStart=");
+    Serial.println(startAngle);
+
+
+  while(check)
+  {
+    setPowerLevel(LEFT, leftTorque);
+    setPowerLevel(RIGHT, rightTorque);
+
+    //qmc.reset();
+    qmc.measure();
+    x = qmc.getX();
+    y = qmc.getY();
+    z = qmc.getZ();
+    actualAngle = qmc.getAngle();
+    Serial.print("x=");
+    Serial.print(x);
+    Serial.print("\ty=");
+    Serial.print(y);
+    Serial.print("\tz=");
+    Serial.print(z);
+    Serial.print("\tActual=");
+    Serial.println(actualAngle);
+    check = checkRightAngle();
+  }*/
+
+  setPowerLevel(LEFT, 0);
+  setPowerLevel(RIGHT, 0);
 }
 
-void encodersInterruptLeft()
-{
-  car.leftEncoderCounter++;
+bool Car::checkRightAngle()
+{ 
+  int checkAng = actualAngle;
+
+  if(startAngle > 269 && actualAngle >= 0)
+    checkAng += 360; 
+  
+  if(abs(checkAng - startAngle) > 88)
+    return false;
+  else 
+    return true;
 }
+
+
+void Car::squaredDrive(int torque, int &leftEncoder, int &rightEncoder) // jazda po prostokącie 
+{ 
+  straightAndTurn(torque, 40, leftEncoder, rightEncoder); 
+  straightAndTurn(torque, 20, leftEncoder, rightEncoder); 
+  straightAndTurn(torque, 40, leftEncoder, rightEncoder); 
+  straightAndTurn(torque, 20, leftEncoder, rightEncoder); 
+} 
+ 
+void Car::straightAndTurn(int torque, int amountEncoder, int &leftEncoder, int &rightEncoder) //jedz prosto przez ilość sygnałów z enkodera i skręć 
+{    
+  leftEncoder=0;
+  rightEncoder=0;
+  
+  while(leftEncoder < amountEncoder) 
+  {
+  Serial.print("L=");
+  Serial.print(leftEncoder);
+  Serial.print("\tR=");
+  Serial.println(rightEncoder);
+    setPowerLevel(LEFT, torque); 
+    setPowerLevel(RIGHT, torque); 
+ 
+    //tu później wstawić sprawdzanie przeszkód 
+  } 
+  setSide(torque,torque,LEFT);
+}
+ 
+void Car::straightDrive(int torque, Direction dir) // zabezpieczyć lepiej  
+{ 
+  Direction newDir; 
+   
+  newDir = changeDir(dir); 
+ 
+  while(getDistance(newDir) < 60 && getDistance(FRONT) > 40) 
+  { 
+    setPowerLevel(LEFT, torque); 
+    setPowerLevel(RIGHT, torque); 
+    //Zliczanie sygnałów enkodera 
+  } 
+} 
+ 
+Direction changeDir(Direction dir) 
+{ 
+  if(dir == LEFT) 
+    return RIGHT; 
+  else 
+    return LEFT;  
+} 

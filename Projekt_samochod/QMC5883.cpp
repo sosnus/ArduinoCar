@@ -30,7 +30,8 @@ void QMC5883::init(void)
 	mode |= RNG_8G;
 	mode |= OSR_512;
 	this->writeRegister(0x09, mode);
-	
+
+  Serial.begin(9600);
 }
 
 void QMC5883::measure(void)
@@ -58,5 +59,15 @@ void QMC5883::measure(void)
 	this->x = x;
 	this->y = y;
 	this->z = z;
+	
+	
+	this->a = azimuth(y,x);
 	//interrupts();
+}
+
+
+
+float QMC5883::azimuth(int16_t a, int16_t b){
+  float azimuth = atan2(a,b) * 180.0/PI;
+  return azimuth < 0?360 + azimuth:azimuth;
 }
